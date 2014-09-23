@@ -60,4 +60,4 @@ module.exports.allPosts = function (event, res) {
 			);
 		});
 }
-``
+```
