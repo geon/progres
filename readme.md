@@ -7,54 +7,57 @@
 
 Basic example:
 
-    progres.connect(conString).then(function (client) {
+```js
+progres.connect(conString).then(function (client) {
 
-        return client
-            .query(SQL)
-            .finally(client.end);
+	return client
+		.query(SQL)
+		.finally(client.end);
 
-    }).done();
-
+}).done();
+```
 
 
 
 
 An example Express route:
 	
-    var connectionString =
-        'postgres://user:password@localhost/database';
+```js
+var connectionString =
+	'postgres://user:password@localhost/database';
 
-    var posts = sql.define({
-        name: 'posts',
-        columns: [
-            "id",
-            "slug",
-            "content",
-            "timePublished",
-            "keywords"
-        ]
-    })
+var posts = sql.define({
+	name: 'posts',
+	columns: [
+		"id",
+		"slug",
+		"content",
+		"timePublished",
+		"keywords"
+	]
+})
 
-    module.exports.allPosts = function (event, res) {
+module.exports.allPosts = function (event, res) {
 
-        progres
-            .connect(connectionString)
-            .then(function (client) {
+	progres
+		.connect(connectionString)
+		.then(function (client) {
 
-                return client
-                    .readAll(posts)
-                    .finally(client.end);
+			return client
+				.readAll(posts)
+				.finally(client.end);
 
-            }).done(function () {
+		}).done(function () {
 
-                res.end();
+			res.end();
 
-            }, function (error) {
+		}, function (error) {
 
-                res.send(500);
-                console.error(
-                    'Error in allPosts:',
-                    error
-                );
-            });
-    }
+			res.send(500);
+			console.error(
+				'Error in allPosts:',
+				error
+			);
+		});
+}
+``
