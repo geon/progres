@@ -1,0 +1,18 @@
+{
+  "name": "progres",
+  "version": "0.0.0",
+  "description": "Promise based wrapper around node-postgres and node-sql by brianc. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "postgres"
+  ],
+  "author": "Victor Widell <victor@topmost.se> (http://geon.github.io/)",
+  "license": "ISC",
+  "dependencies": {
+    "pg": "3.4.4",
+    "q": "1.0.1"
+  }
+}
