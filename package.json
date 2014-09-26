@@ -1,7 +1,7 @@
 {
   "name": "progres",
   "version": "0.0.0",
-  "description": "Promise based wrapper around node-postgres and node-sql by brianc. ",
+  "description": "Promise based wrapper around node-postgres and node-sql by brianc.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
