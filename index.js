@@ -13,19 +13,11 @@ module.exports = {
 
 	connect: function (connectionString) {
 
-		var deferred = Q.defer();
-
 		var client = new pg.Client(connectionString);
 
-		client.connect(function (error) {
+		return Q.nbind(client.connect, client)().then(function () {
 
-			if (error) {
-
-				deferred.reject(error);
-				return;
-			}
-
-			deferred.resolve({
+			return {
 
 				end: function () {
 
@@ -87,7 +79,7 @@ module.exports = {
 						);
 					});
 				}
-			});
+			};
 
 			function query (SQL, parameters) {
 
@@ -123,7 +115,5 @@ module.exports = {
 				});
 			}
 		});
-
-		return deferred.promise;
 	}
 };
