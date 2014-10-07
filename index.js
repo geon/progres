@@ -9,6 +9,112 @@ var Q = require('q');
 // code on the api consumer side.
 // https://github.com/brianc/node-postgres/wiki/Transactions
 
+function ProgresClient (pgClient) {
+
+	this.pgClient = pgClient;
+
+	// `end` is a bit special. I want it to be passed as a callback, 
+	// so it must be bound to `this`, or close over pgClient directly.
+	this.end = function () {
+
+		pgClient.end();
+	};
+}
+
+
+ProgresClient.prototype.query = function (SQL, parameters) {
+
+	return Q
+		.nbind(this.pgClient.query, this.pgClient)(SQL, parameters)
+		.catch(function (error) {
+
+			// Add some useful info.
+			error.SQL        = SQL;
+			error.parameters = parameters;
+
+			// Rethrow the error since it wasn't handled.
+			throw error;
+
+		})
+		.then(function (result) {
+
+			return result.rows;
+		});
+};
+
+
+ProgresClient.prototype.queryGenerated = function (generated) {
+
+	var THIS = this;
+
+	// Wrap with Q().then to make exceptions work.
+	return Q().then(function () {
+
+		var SQLAndValues = generated.toQuery();
+
+		return THIS.query(SQLAndValues.text, SQLAndValues.values);
+	});
+};
+
+
+ProgresClient.prototype.insert = function (tableDefinition, objectOrArray) {
+
+	var THIS = this;
+
+	return Q().then(function () {
+	
+		return THIS.queryGenerated(
+			tableDefinition
+				.insert(objectOrArray)
+		);
+	});
+};
+
+
+ProgresClient.prototype.deleteWhere = function (tableDefinition, conditions) {
+
+	var THIS = this;
+
+	return Q().then(function () {
+
+		return THIS.queryGenerated(
+			tableDefinition
+				.delete()
+				.where(conditions)
+		);
+	});
+};
+
+
+ProgresClient.prototype.readOneWhere = function (tableDefinition, conditions) {
+
+	var THIS = this;
+
+	return Q().then(function () {
+
+		return THIS.queryGenerated(
+			tableDefinition
+				.select()
+				.where(conditions)
+		).then(function (rows) { return rows[0]; });
+	});
+};
+
+
+ProgresClient.prototype.readAll = function (tableDefinition) {
+
+	var THIS = this;
+
+	return Q().then(function () {
+
+		return THIS.queryGenerated(
+			tableDefinition
+				.select()
+		);
+	});
+};
+
+
 module.exports = {
 
 	connect: function (connectionString) {
@@ -17,103 +123,7 @@ module.exports = {
 
 		return Q.nbind(client.connect, client)().then(function () {
 
-			return {
-
-				end: function () {
-
-					client.end();
-				},
-
-
-				query: query,
-
-
-				queryGenerated: queryGenerated,
-
-
-				insert: function (tableDefinition, objectOrArray) {
-
-					return Q().then(function () {
-					
-						return queryGenerated(
-							tableDefinition
-								.insert(objectOrArray)
-						);
-					});
-				},
-
-
-				deleteWhere: function (tableDefinition, conditions) {
-
-					return Q().then(function () {
-
-						return queryGenerated(
-							tableDefinition
-								.delete()
-								.where(conditions)
-						);
-					});
-				},
-
-
-				readOneWhere: function (tableDefinition, conditions) {
-
-					return Q().then(function () {
-
-						return queryGenerated(
-							tableDefinition
-								.select()
-								.where(conditions)
-						).then(function (rows) { return rows[0]; });
-					});
-				},
-
-
-				readAll: function (tableDefinition) {
-
-					return Q().then(function () {
-
-						return queryGenerated(
-							tableDefinition
-								.select()
-						);
-					});
-				}
-			};
-
-			function query (SQL, parameters) {
-
-				// Wrap with Q().then to make exceptions work.
-				var outerArguments = arguments;
-				return Q().then(function () {
-
-					return Q
-						.nbind(client.query, client)(SQL, parameters)
-						.catch(function (error) {
-
-							// Just a convenient place to log this.
-							error.SQL        = SQL;
-							error.parameters = parameters;
-
-							// Rethrow the error since it wasn't handled.
-							throw error;
-
-						}).then(function (result) {
-
-							return result.rows;
-						});
-				});
-			}
-
-			function queryGenerated (generated) {
-
-				return Q().then(function () {
-
-					var SQLAndValues = generated.toQuery();
-
-					return query(SQLAndValues.text, SQLAndValues.values);
-				});
-			}
+			return new ProgresClient(client);
 		});
 	}
 };
