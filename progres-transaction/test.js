@@ -23,4 +23,5 @@ Q.all([
 }, function (error) {
 
 	console.error(error);
+	process.exit(1);
 });

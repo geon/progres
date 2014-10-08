@@ -4,7 +4,7 @@
   "description": "Transaction support for progres.",
   "main": "index.js",
   "scripts": {
-    "test": "test.js"
+    "test": "node test.js"
   },
   "keywords": [
     "postgres"
