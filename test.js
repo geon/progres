@@ -1,10 +1,12 @@
 "use strict";
 
 var Q = require('q');
-var progres = require("./index.js");
-var progresGenerated = require("./progres-generated-sql.js");
 var sql = require("sql");
-var progresTransaction = require("./progres-transaction.js");
+var progres = require("./index.js");
+
+// Monkey-patch progres with extra functionality.
+require("./progres-generated-sql.js");
+require("./progres-transaction.js");
 
 Q.all([
 	progres.connect("postgres://localhost", function (client) {
@@ -20,7 +22,7 @@ Q.all([
 		});
 	}),
 
-	progresGenerated.connect("postgres://localhost", function (client) {
+	progres.connect("postgres://localhost", function (client) {
 
 		var generatedSQL = {toQuery: function () { return {
 			text: "SELECT $1::text AS result",
@@ -36,7 +38,7 @@ Q.all([
 		});
 	}),
 
-	progresTransaction.transaction("postgres://localhost", function (client) {
+	progres.transaction("postgres://localhost", function (client) {
 
 		var handwrittenSQL = "SELECT 'passed' AS result";
 
