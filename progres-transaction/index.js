@@ -3,6 +3,10 @@
 var progres = require('progres');
 var Q = require('q');
 
+
+// Monkey-patch progres with transaction functionality.
+
+
 progres.transaction = function (connectionString, job) {
 
 	return progres.connect(connectionString, function (client) {

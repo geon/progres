@@ -4,7 +4,8 @@ var progres = require('progres');
 var Q = require('q');
 
 
-// Just add a bunch of methods to ProgresClient.
+// Monkey-patch ProgresClient with convenience methods.
+
 
 progres.ProgresClient.prototype.queryGenerated = function (generated) {
 

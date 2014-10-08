@@ -1,10 +1,7 @@
 "use strict";
 
 var Q = require('q');
-var progres = require('progres');
-
-// Monkey-patch progres with transaction functionality.
-require('./index.js');
+var progres = require('./index.js');
 
 Q.all([
 	progres.transaction("postgres://localhost", function (client) {
