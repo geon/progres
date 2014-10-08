@@ -40,10 +40,16 @@ module.exports = {
 
 	connect: function (connectionString, job) {
 
+		// Wrap the job in Q().then(...) to catch exceptions.
+		var wrappedJob = Q().then(function () {
+
+			return job(new ProgresClient(postgresClient));
+		});
+
 		var postgresClient = new pg.Client(connectionString);
 
 		return Q.nbind(postgresClient.connect, postgresClient)()
-			.then(job(new ProgresClient(postgresClient)))
+			.then(wrappedJob)
 			.finally(function () {
 
 				postgresClient.end();
