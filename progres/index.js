@@ -48,12 +48,19 @@ module.exports = {
 
 		var postgresClient = new pg.Client(connectionString);
 
-		return Q.nbind(postgresClient.connect, postgresClient)()
+		return (
+			// Connect.
+			Q.nbind(postgresClient.connect, postgresClient)()
+
+			// Do the job.
 			.then(wrappedJob)
+
+			// Disconnect.
 			.finally(function () {
 
 				postgresClient.end();
-			});
+			})
+		);
 	},
 
 	ProgresClient: ProgresClient
