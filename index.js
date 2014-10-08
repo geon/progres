@@ -9,16 +9,16 @@ var Q = require('q');
 // code on the api consumer side.
 // https://github.com/brianc/node-postgres/wiki/Transactions
 
-function ProgresClient (pgClient) {
+function ProgresClient (postgresClient) {
 
-	this.pgClient = pgClient;
+	this.postgresClient = postgresClient;
 }
 
 
 ProgresClient.prototype.query = function (SQL, parameters) {
 
 	return Q
-		.nbind(this.pgClient.query, this.pgClient)(SQL, parameters)
+		.nbind(this.postgresClient.query, this.postgresClient)(SQL, parameters)
 		.catch(function (error) {
 
 			// Add some useful info.
@@ -40,13 +40,13 @@ module.exports = {
 
 	connect: function (connectionString, job) {
 
-		var pgClient = new pg.Client(connectionString);
+		var postgresClient = new pg.Client(connectionString);
 
-		return Q.nbind(pgClient.connect, pgClient)().then(function () {
+		return Q.nbind(postgresClient.connect, postgresClient)().then(function () {
 
-			return job(new ProgresClient(pgClient)).finally(function () {
+			return job(new ProgresClient(postgresClient)).finally(function () {
 
-				pgClient.end();
+				postgresClient.end();
 			});
 		});
 	},
