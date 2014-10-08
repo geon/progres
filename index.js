@@ -43,78 +43,6 @@ ProgresClient.prototype.query = function (SQL, parameters) {
 };
 
 
-ProgresClient.prototype.queryGenerated = function (generated) {
-
-	var THIS = this;
-
-	// Wrap with Q().then to make exceptions work.
-	return Q().then(function () {
-
-		var SQLAndValues = generated.toQuery();
-
-		return THIS.query(SQLAndValues.text, SQLAndValues.values);
-	});
-};
-
-
-ProgresClient.prototype.insert = function (tableDefinition, objectOrArray) {
-
-	var THIS = this;
-
-	return Q().then(function () {
-	
-		return THIS.queryGenerated(
-			tableDefinition
-				.insert(objectOrArray)
-		);
-	});
-};
-
-
-ProgresClient.prototype.deleteWhere = function (tableDefinition, conditions) {
-
-	var THIS = this;
-
-	return Q().then(function () {
-
-		return THIS.queryGenerated(
-			tableDefinition
-				.delete()
-				.where(conditions)
-		);
-	});
-};
-
-
-ProgresClient.prototype.readOneWhere = function (tableDefinition, conditions) {
-
-	var THIS = this;
-
-	return Q().then(function () {
-
-		return THIS.queryGenerated(
-			tableDefinition
-				.select()
-				.where(conditions)
-		).then(function (rows) { return rows[0]; });
-	});
-};
-
-
-ProgresClient.prototype.readAll = function (tableDefinition) {
-
-	var THIS = this;
-
-	return Q().then(function () {
-
-		return THIS.queryGenerated(
-			tableDefinition
-				.select()
-		);
-	});
-};
-
-
 module.exports = {
 
 	connect: function (connectionString) {
@@ -125,5 +53,7 @@ module.exports = {
 
 			return new ProgresClient(client);
 		});
-	}
+	},
+
+	ProgresClient: ProgresClient
 };
