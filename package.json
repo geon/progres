@@ -14,5 +14,8 @@
   "dependencies": {
     "pg": "3.4.4",
     "q": "1.0.1"
+  },
+  "devDependencies": {
+    "sql": "0.40.0"
   }
 }
