@@ -40,13 +40,13 @@ module.exports = {
 
 	connect: function (connectionString, job) {
 
-		var client = new pg.Client(connectionString);
+		var pgClient = new pg.Client(connectionString);
 
-		return Q.nbind(client.connect, client)().then(function () {
+		return Q.nbind(pgClient.connect, pgClient)().then(function () {
 
-			return job(new ProgresClient(client)).finally(function () {
+			return job(new ProgresClient(pgClient)).finally(function () {
 
-				client.end();
+				pgClient.end();
 			});
 		});
 	},
