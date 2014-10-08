@@ -1,18 +1,19 @@
-`connect` returns a promise of a connection. It has these methods:
+`connect` returns a promise of a completed job. It takes the connection string, and a "job" callback.
+
+The job callback takes an argument with a ProgresClient object. It has this method:
 
 * `query` takes an SQL sting and optional parameters, returning a promise of the result.
-* `end` disconnects.
-* `queryGenerated` takes a `node-sql`-object, returning a promise of the result.
-* insert (tableDefinition, objectOrArray) - takes a `node-sql` table definition and an object to insert.
+
+The job callback *must return a promise*. It may not use the ProgresClient object outside the promise chain, since the database connection is released automatically when the job's returned promise resolves.
+
 
 Basic example:
 
 ```js
-progres.connect(conString).then(function (client) {
+progres.connect(conString, function (client) {
 
 	return client
-		.query(SQL)
-		.finally(client.end);
+		.query(SQL);
 
 }).done();
 ```
@@ -40,18 +41,16 @@ var posts = sql.define({
 module.exports.allPosts = function (event, res) {
 
 	progres
-		.connect(connectionString)
-		.then(function (client) {
+		.connect(connectionString, function (client) {
 
 			return client
-				.readAll(posts)
-				.finally(client.end);
+				.readAll(posts);
 
-		}).done(function () {
+		}).then(function (posts) {
 
-			res.end();
+			res.end(JSON.stringify(posts));
 
-		}, function (error) {
+		}).done(null, function (error) {
 
 			res.send(500);
 			console.error(

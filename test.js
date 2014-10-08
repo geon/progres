@@ -6,7 +6,7 @@ var progresGenerated = require("./progres-generated-sql.js");
 var sql = require("sql");
 
 Q.all([
-	progres.connect("postgres://localhost").then(function (client) {
+	progres.connect("postgres://localhost", function (client) {
 
 		var handwrittenSQL = "SELECT 'passed' AS result";
 
@@ -16,11 +16,10 @@ Q.all([
 
 				throw new Error("Didn't pass.");
 			}
-
-		}).finally(client.end);
+		});
 	}),
 
-	progresGenerated.connect("postgres://localhost").then(function (client) {
+	progresGenerated.connect("postgres://localhost", function (client) {
 
 		var generatedSQL = {toQuery: function () { return {
 			text: "SELECT $1::text AS result",
@@ -33,8 +32,7 @@ Q.all([
 
 				throw new Error("Didn't pass.");
 			}
-
-		}).finally(client.end);
+		});
 	})
 
 ]).done(function () {

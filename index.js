@@ -12,13 +12,6 @@ var Q = require('q');
 function ProgresClient (pgClient) {
 
 	this.pgClient = pgClient;
-
-	// `end` is a bit special. I want it to be passed as a callback, 
-	// so it must be bound to `this`, or close over pgClient directly.
-	this.end = function () {
-
-		pgClient.end();
-	};
 }
 
 
@@ -45,13 +38,16 @@ ProgresClient.prototype.query = function (SQL, parameters) {
 
 module.exports = {
 
-	connect: function (connectionString) {
+	connect: function (connectionString, job) {
 
 		var client = new pg.Client(connectionString);
 
 		return Q.nbind(client.connect, client)().then(function () {
 
-			return new ProgresClient(client);
+			return job(new ProgresClient(client)).finally(function () {
+
+				client.end();
+			});
 		});
 	},
 
