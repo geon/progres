@@ -1,0 +1,21 @@
+{
+  "name": "progres-convenience",
+  "version": "0.0.0",
+  "description": "Convenience methods for progres.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "postgres"
+  ],
+  "author": "Victor Widell <victor@topmost.se> (http://geon.github.io/)",
+  "license": "ISC",
+  "dependencies": {
+    "progres": "0.0.0",
+    "q": "1.0.1"
+  },
+  "devDependencies": {
+    "sql": "0.40.0"
+  }
+}

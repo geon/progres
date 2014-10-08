@@ -1,6 +1,6 @@
 "use strict";
 
-var progres = require('./index.js');
+var progres = require('progres');
 var Q = require('q');
 
 progres.transaction = function (connectionString, job) {
