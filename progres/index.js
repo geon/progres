@@ -51,6 +51,7 @@ module.exports = {
 
 				var jobResult = job(new ProgresClient(postgresClient));
 
+				// The job should return a promise.
 				if (!Q.isPromiseAlike(jobResult)) {
 
 					var error = new Error([
