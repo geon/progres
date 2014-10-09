@@ -16,11 +16,13 @@ var progres = require("./index.js");
 
 		}).then(function () {
 
+			// This should never execute.
 			throw new Error("Errors in the job should propagate.");
 
 		}, function (error) {
 
-			if (error != "passed") {
+			// Is it the error thrown in the job?
+			if (error !== "passed") {
 
 				// Unexpected error.
 				throw error;
@@ -82,9 +84,10 @@ var progres = require("./index.js");
 
 			var brokenSql = "broken sql";
 
-			// Run a query.
+			// Run a broken query.
 			return client.query(brokenSql).then(function () {
 
+				// This should never execute.
 				throw new Error("Broken SQL should propagate the error.");
 
 			}, function (error) {
@@ -129,10 +132,12 @@ var progres = require("./index.js");
 
 		return progres.connect("postgres://localhost", function (client) {
 
+			// Break the rule about returning promises.
 			return "not a promise";
 
 		}).then(function () {
 
+			// This should never execute.
 			throw new Error("An exception should be thrown if the job doesn't return a promise.");
 
 		}, function (error) {
