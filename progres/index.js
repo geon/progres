@@ -40,12 +40,6 @@ module.exports = {
 
 	connect: function (connectionString, job) {
 
-		// Wrap the job in Q().then(...) to catch exceptions.
-		var wrappedJob = Q().then(function () {
-
-			return job(new ProgresClient(postgresClient));
-		});
-
 		var postgresClient = new pg.Client(connectionString);
 
 		return (
@@ -53,7 +47,24 @@ module.exports = {
 			Q.nbind(postgresClient.connect, postgresClient)()
 
 			// Do the job.
-			.then(wrappedJob)
+			.then(function () {
+
+				var jobResult = job(new ProgresClient(postgresClient));
+
+				if (!Q.isPromiseAlike(jobResult)) {
+
+					var error = new Error([
+						"A progres job callback returned a non-promise. ",
+						"That can cause the database connection to close ",
+						"before you are done using it. That is bad."
+					].join(""));
+					error.jobResult = jobResult;
+
+					throw error;
+				}
+
+				return jobResult;
+			})
 
 			// Disconnect.
 			.finally(function () {
