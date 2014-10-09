@@ -3,13 +3,14 @@
 var Q = require('q');
 var progres = require("./index.js");
 
+var connectionString = "postgres://localhost";
 
 [
 
 	// Errors in the job should propagate.
 	function () {
 
-		return progres.connect("postgres://localhost", function (client) {
+		return progres.connect(connectionString, function (client) {
 
 			// Exception in the job.
 			throw "passed";
@@ -36,7 +37,7 @@ var progres = require("./index.js");
 
 		var calledEnd = false;
 
-		return progres.connect("postgres://localhost", function (client) {
+		return progres.connect(connectionString, function (client) {
 
 			// Attach a hook directly to the postgres client.
 			var oldEnd = client.postgresClient.end;
@@ -62,7 +63,7 @@ var progres = require("./index.js");
 	// Queries should return the resulting rows.
 	function () {
 
-		return progres.connect("postgres://localhost", function (client) {
+		return progres.connect(connectionString, function (client) {
 
 			// Run a query.
 			return client.query("SELECT 'passed' AS column_name;").then(function (rows) {
@@ -80,7 +81,7 @@ var progres = require("./index.js");
 	// Broken SQL should propagate the error.
 	function () {
 
-		return progres.connect("postgres://localhost", function (client) {
+		return progres.connect(connectionString, function (client) {
 
 			var brokenSql = "broken sql";
 
@@ -105,7 +106,7 @@ var progres = require("./index.js");
 	// Broken SQL should propagate the error.
 	function () {
 
-		return progres.connect("postgres://localhost", function (client) {
+		return progres.connect(connectionString, function (client) {
 
 			var brokenSql = "broken sql";
 
@@ -130,7 +131,7 @@ var progres = require("./index.js");
 	// (Or the client might be ended prematurely - dangerous.)
 	function () {
 
-		return progres.connect("postgres://localhost", function (client) {
+		return progres.connect(connectionString, function (client) {
 
 			// Break the rule about returning promises.
 			return "not a promise";
