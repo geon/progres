@@ -8,7 +8,7 @@ The add-on modules [`progres-transaction`](progres-transaction/readme.md) and [`
 Basic example
 -------------
 
-```
+```js
 var progres = require('progres');
 
 progres.connect(connectionString, function (client) {
@@ -50,7 +50,7 @@ progres-transaction
 
 The `progres-transaction` module adds automatic transaction handling.
 
-```
+```js
 var progres = require('progres-transaction');
 
 progres.transaction(connectionString, function (client) {
@@ -69,7 +69,7 @@ progres-convenience
 
 The `progres-convenience` module adds a few methods to `ProgresClient` for common tasks, using `node-sql` for SQL generation.
 
-```
+```js
 var progres = require('progres-convenience');
 var sql = require('sql');
 
@@ -106,17 +106,17 @@ They are designed to work well together. Just require both `progres-transaction`
 
 All variations below are equivalent:
 
-```
+```js
 var progres = require('progres-transaction');
 require('progres-convenience');
 ```
 
-```
+```js
 require('progres-transaction');
 var progres = require('progres-convenience');
 ```
 
-```
+```js
 var progres = require('progres');
 require('progres-transaction');
 require('progres-convenience');
