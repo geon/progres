@@ -73,8 +73,8 @@ The `progres-convenience` module adds a few methods to `ProgresClient` for commo
 var progres = require('progres-convenience');
 var sql = require('sql');
 
-var userTable = sql.define({
-	name: 'user',
+var usersTable = sql.define({
+	name: 'users',
 	columns: ['id', 'name', 'email']
 });
 
@@ -85,7 +85,7 @@ var user = {
 
 progres.connect(connectionString, function (client) {
 
-	return client.insert(userTable, user);
+	return client.insert(usersTable, user);
 
 }).done();
 ```
