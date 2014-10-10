@@ -106,7 +106,7 @@ Inserts the `objectOrObjects` in the table specified by `tableDefinition`.
 
 Return value: A promise.
 
-### client.deleteWhere(tableDefinition, conditions)
+#### client.deleteWhere(tableDefinition, conditions)
 
 Deletes the rows meeting the `conditions` from the table specified by `tableDefinition`.
 
