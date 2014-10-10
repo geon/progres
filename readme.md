@@ -26,7 +26,6 @@ API
 
 ### progres.connect(connectionString, job)
 
-
 * `connectionString` - The postgres connection string.
 * `job` - A callback where you do the actual work. It' single argument is a `ProgresClient` instance, and it **must return a promise**. It may not use the `ProgresClient` instance outside the chain of the returned promise, since the database connection is released automatically when the `job`'s returned promise resolves.
 
@@ -90,12 +89,29 @@ progres.connect(connectionString, function (client) {
 }).done();
 ```
 
+#### client.queryGenerated(queryObject)
+
+This works just like `client.query(SQL)`, but takes a [`node-sql`](https://github.com/brianc/node-sql) query object in place of the SQL.
+
+* `queryObject` - The [`node-sql`](https://github.com/brianc/node-sql) query object to execute.
+
+Return value: A promise, resolved with the resulting rows from the SQL statement.
+
 #### client.insert(tableDefinition, objectOrObjects)
+
+Inserts the `objectOrObjects` in the table specified by `tableDefinition`.
 
 * `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
 * `objectOrObjects` - An object, or an array of objects to insert into the table defined by `tableDefinition`.
 
 Return value: A promise.
+
+### client.deleteWhere(tableDefinition, conditions)
+
+Deletes the rows meeting the `conditions` from the table specified by `tableDefinition`.
+
+* `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
+* `conditions` - A [`node-sql`](https://github.com/brianc/node-sql) condition object.
 
 #### etc...
 
