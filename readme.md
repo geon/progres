@@ -113,6 +113,8 @@ Deletes the rows meeting the `conditions` from the table specified by `tableDefi
 * `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
 * `conditions` - A [`node-sql`](https://github.com/brianc/node-sql) condition object.
 
+Return value: A promise.
+
 #### etc...
 
 Combining Transactions And Convenience
