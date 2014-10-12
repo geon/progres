@@ -136,15 +136,15 @@ Updates all rows matched by the `conditions` with the values in `object`.
 
 Return value: A promise, resolved with the updated rows.
 
-#### client.upsert(tableDefinition, conditions, object)
+#### client.upsert(tableDefinition, object, [primaryKeyName])
 
 Try to insert the object. If it fails, update the existing row.
 
 * `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
-* `conditions` - A [`node-sql`](https://github.com/brianc/node-sql) condition object.
 * `object` - An object to insert into the table defined by `tableDefinition`.
+* `primaryKeyName` - Optional *if the `tableDefinition` has a column marked as `primaryKey`*. The name of the primary key column.
 
-Return value: A promise.
+Return value: A promise, resolved with the inserted or updated row.
 
 #### client.delete(tableDefinition, conditions)
 
