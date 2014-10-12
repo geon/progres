@@ -5,6 +5,9 @@ Progres
 
 The add-on modules [`progres-transaction`](progres-transaction/readme.md) and [`progres-convenience`](progres-convenience/readme.md) provides some non-essential functionality.
 
+
+
+
 Basic example
 -------------
 
@@ -21,8 +24,14 @@ progres.connect(connectionString, function (client) {
 }).done();
 ```
 
+
+
+
 API
 ---
+
+
+
 
 ### progres.connect(connectionString, job)
 
@@ -31,9 +40,15 @@ API
 
 Return value: The promise returned by your `job` callback.
 
+
+
+
 ### ProgresClient
 
 You are not supposed to create instances of `ProgresClient` yourself. It is passed to you in the argument to your `job` callback in `progres.connect`. Assuming it is named `client`:
+
+
+
 
 #### client.query(SQL, parameters)
 
@@ -43,6 +58,9 @@ This is a promisified proxy to the `client.query(SQL, parameters, callback)` met
 * `parameters` - Optional parameters for prepared statements.
 
 Return value: A promise, resolved with the resulting rows from the SQL statement.
+
+
+
 
 progres-transaction
 -------------------
@@ -59,9 +77,15 @@ progres.transaction(connectionString, function (client) {
 }).done();
 ```
 
+
+
+
 ### progres.transaction(connectionString, job)
 
 This method works just like `progres.connect(connectionString, job)`, but is wrapped in a transaction. If the promise returned by `job` resolves, the transaction is committed. If it is rejected, the transaction is rolled back.
+
+
+
 
 progres-convenience
 -------------------
@@ -89,6 +113,9 @@ progres.connect(connectionString, function (client) {
 }).done();
 ```
 
+
+
+
 #### client.queryGenerated(queryObject)
 
 This works just like `client.query(SQL)`, but takes a [`node-sql`](https://github.com/brianc/node-sql) query object in place of the SQL.
@@ -96,6 +123,9 @@ This works just like `client.query(SQL)`, but takes a [`node-sql`](https://githu
 * `queryObject` - The [`node-sql`](https://github.com/brianc/node-sql) query object to execute.
 
 Return value: A promise, resolved with the resulting rows from the SQL statement.
+
+
+
 
 #### client.insert(tableDefinition, objectOrObjects)
 
@@ -105,6 +135,9 @@ Inserts the `objectOrObjects` in the table specified by `tableDefinition`.
 * `objectOrObjects` - An object, or an array of objects to insert into the table defined by `tableDefinition`.
 
 Return value: A promise, resolved with the inserted row or rows.
+
+
+
 
 #### client.select(tableDefinition, [conditions, [columnNames]])
 
@@ -116,6 +149,9 @@ Selects `columnNames` from all rows in the table defined by `tableDefinition`, m
 
 Return value: A promise, resolved with the matching rows.
 
+
+
+
 #### client.selectOne(tableDefinition, [conditions, [columnNames]])
 
 Same as `client.select(tableDefinition, [conditions, [columnNames]])`, but only the first row is returned. Useful if you know there is at most one matching row.
@@ -125,6 +161,9 @@ Same as `client.select(tableDefinition, [conditions, [columnNames]])`, but only 
 * `columnNames` - Optional. An array of column names to select.
 
 Return value: A promise, resolved with the first matching row.
+
+
+
 
 #### client.update(tableDefinition, conditions, object)
 
@@ -136,6 +175,9 @@ Updates all rows matched by the `conditions` with the values in `object`.
 
 Return value: A promise, resolved with the updated rows.
 
+
+
+
 #### client.delete(tableDefinition, conditions)
 
 Deletes the rows meeting the `conditions` from the table specified by `tableDefinition`.
@@ -144,6 +186,9 @@ Deletes the rows meeting the `conditions` from the table specified by `tableDefi
 * `conditions` - A [`node-sql`](https://github.com/brianc/node-sql) condition object.
 
 Return value: A promise.
+
+
+
 
 Combining Transactions And Convenience
 --------------------------------------
