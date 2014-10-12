@@ -145,8 +145,6 @@ Deletes the rows meeting the `conditions` from the table specified by `tableDefi
 
 Return value: A promise.
 
-#### etc...
-
 Combining Transactions And Convenience
 --------------------------------------
 
