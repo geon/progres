@@ -104,7 +104,7 @@ Inserts the `objectOrObjects` in the table specified by `tableDefinition`.
 * `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
 * `objectOrObjects` - An object, or an array of objects to insert into the table defined by `tableDefinition`.
 
-Return value: A promise.
+Return value: A promise, resolved with the inserted row or rows.
 
 #### client.select(tableDefinition, [conditions, [columnNames]])
 

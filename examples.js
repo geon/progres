@@ -1,8 +1,10 @@
 
+var Q = require("q");
 var progres = require("progres");
 
 var connectionString = "postgres://localhost";
 
+// Do a simple query and print the result.
 progres.connect(connectionString, function (client) {
 
 	return client.query('SELECT NOW() AS time').then(function (rows) {
@@ -36,7 +38,28 @@ progres.connect(connectionString, function (client) {
 
 	return client.queryGenerated(usersTable.create().ifNotExists()).then(function () {
 
-		return client.insert(usersTable, user);
+		return [
+
+			// Insert a single object.
+			function () {
+
+				return client.insert(usersTable, user).then(function (insertedRow) {
+
+					console.log('Inserted row:', insertedRow);
+				});
+			},
+
+			// Insert multiple objects at once.
+			function () {
+
+				return client.insert(usersTable, [user, user]).then(function (insertedRows) {
+
+					console.log('Inserted rows:', insertedRows);
+				});
+			}
+		]
+			// Run in sequence.
+			.reduce(function (soFar, next) { return soFar.then(next); }, Q());
 	});
-	
+
 }).done();
