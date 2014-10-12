@@ -67,28 +67,6 @@ progres.connect(connectionString, function (client) {
 
 						console.log('Updated rows:', updatedRows);
 					});
-			},
-
-			// Upsert existing.
-			function () {
-
-				return client
-					.upsert(usersTable, {id: 1, name: 'geon'}, 'id')
-					.then(function (upsertedRow) {
-
-						console.log('Upserted row:', upsertedRow);
-					});
-			},
-
-			// Upsert new.
-			function () {
-
-				return client
-					.upsert(usersTable, {name: 'geon'}, 'id')
-					.then(function (upsertedRow) {
-
-						console.log('Upserted row:', upsertedRow);
-					});
 			}
 		]
 			// Run in sequence.
