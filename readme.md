@@ -1,4 +1,4 @@
-﻿Progres
+Progres
 =======
 
 [`progres`](node_modules/progres/readme.md) is a Node.js module to wrap [`node-postgres`](https://github.com/brianc/node-postgres) in a nice, promise based interface.
@@ -30,7 +30,7 @@ API
 * `job` - A callback where you do the actual work. It' single argument is a `ProgresClient` instance, and it **must return a promise**. It may not use the `ProgresClient` instance outside the chain of the returned promise, since the database connection is released automatically when the `job`'s returned promise resolves.
 
 Return value: The promise returned by your `job` callback.
-	
+
 ### ProgresClient
 
 You are not supposed to create instances of `ProgresClient` yourself. It is passed to you in the argument to your `job` callback in `progres.connect`. Assuming it is named `client`:
@@ -106,7 +106,47 @@ Inserts the `objectOrObjects` in the table specified by `tableDefinition`.
 
 Return value: A promise.
 
-#### client.deleteWhere(tableDefinition, conditions)
+#### client.select(tableDefinition, [conditions, [columnNames]])
+
+Selects `columnNames` from all rows in the table defined by `tableDefinition`, matching the `conditions`.
+
+* `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
+* `conditions` - Optional. A [`node-sql`](https://github.com/brianc/node-sql) condition object.
+* `columnNames` - Optional. An array of column names to select.
+
+Return value: A promise, resolved with the matching rows.
+
+#### client.selectOne(tableDefinition, [conditions, [columnNames]])
+
+Same as `client.select(tableDefinition, [conditions, [columnNames]])`, but only the first row is returned. Useful if you know there is at most one matching row.
+
+* `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
+* `conditions` - Optional. A [`node-sql`](https://github.com/brianc/node-sql) condition object.
+* `columnNames` - Optional. An array of column names to select.
+
+Return value: A promise, resolved with the first matching row.
+
+#### client.update(tableDefinition, conditions, object)
+
+Updates all rows matched by the `conditions` with the values in `object`.
+
+* `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
+* `conditions` - A [`node-sql`](https://github.com/brianc/node-sql) condition object.
+* `object` - A hash of column names and the values to update them with.
+
+Return value: A promise.
+
+#### client.upsert(tableDefinition, conditions, object)
+
+Try to insert the object. If it fails, update the existing row.
+
+* `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
+* `conditions` - A [`node-sql`](https://github.com/brianc/node-sql) condition object.
+* `object` - An object to insert into the table defined by `tableDefinition`.
+
+Return value: A promise.
+
+#### client.delete(tableDefinition, conditions)
 
 Deletes the rows meeting the `conditions` from the table specified by `tableDefinition`.
 
