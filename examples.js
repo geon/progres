@@ -56,6 +56,17 @@ progres.connect(connectionString, function (client) {
 
 					console.log('Inserted rows:', insertedRows);
 				});
+			},
+
+			// Update.
+			function () {
+
+				return client
+					.update(usersTable, '1 = 1', {name: 'anonymous'})
+					.then(function (updatedRows) {
+
+						console.log('Updated rows:', updatedRows);
+					});
 			}
 		]
 			// Run in sequence.

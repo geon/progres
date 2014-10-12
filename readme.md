@@ -134,7 +134,7 @@ Updates all rows matched by the `conditions` with the values in `object`.
 * `conditions` - A [`node-sql`](https://github.com/brianc/node-sql) condition object.
 * `object` - A hash of column names and the values to update them with.
 
-Return value: A promise.
+Return value: A promise, resolved with the updated rows.
 
 #### client.upsert(tableDefinition, conditions, object)
 
