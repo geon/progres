@@ -139,26 +139,24 @@ Return value: A promise, resolved with the inserted row or rows.
 
 
 
-#### client.select(tableDefinition, [conditions, [columnNames]])
+#### client.select(tableDefinition, [conditions])
 
-Selects `columnNames` from all rows in the table defined by `tableDefinition`, matching the `conditions`.
+Selects all rows in the table defined by `tableDefinition`, matching the `conditions`.
 
 * `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
 * `conditions` - Optional. A [`node-sql`](https://github.com/brianc/node-sql) condition object.
-* `columnNames` - Optional. An array of column names to select.
 
 Return value: A promise, resolved with the matching rows.
 
 
 
 
-#### client.selectOne(tableDefinition, [conditions, [columnNames]])
+#### client.selectOne(tableDefinition, [conditions])
 
-Same as `client.select(tableDefinition, [conditions, [columnNames]])`, but only the first row is returned. Useful if you know there is at most one matching row.
+Same as `client.select(tableDefinition, [conditions])`, but only the first row is returned. Useful if you know there is at most one matching row.
 
 * `tableDefinition` - A [`node-sql`](https://github.com/brianc/node-sql) table definition.
 * `conditions` - Optional. A [`node-sql`](https://github.com/brianc/node-sql) condition object.
-* `columnNames` - Optional. An array of column names to select.
 
 Return value: A promise, resolved with the first matching row.
 
