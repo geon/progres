@@ -1,8 +1,8 @@
 
-var Q = require("q");
-var progres = require("progres");
+var Q = require('q');
+var progres = require('progres');
 
-var connectionString = "postgres://localhost";
+var connectionString = 'postgres://localhost';
 
 // Do a simple query and print the result.
 progres.connect(connectionString, function (client) {
